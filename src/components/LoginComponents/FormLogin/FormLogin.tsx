@@ -67,7 +67,8 @@ const FormLogin = ()=>{
     }
 
     return(
-        <fieldset>
+        <fieldset className="w-[30rem] rounded-xl border-[#AA93B7] border-2 bg-white p-5 shadow-md">
+            <h1 className="text-4xl mb-5 font-medium">Entrar</h1>
             <form className="flex flex-col" onSubmit={validar}>
                 <InputArea
                 value={inputCnpj}

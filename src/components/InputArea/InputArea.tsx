@@ -20,9 +20,9 @@ const InputArea = ({onChange,value,label,required ,placeHolder, disable,tipo,max
 
     return(
         <>
-        <label className="mt-3 font-semibold text-lg">{label}</label>
+        <label className="block text-gray-700 font-semibold mb-2">{label}</label>
         <input
-        className={`${disable==true? "bg-gray-300" : ""} rounded-xl p-3 border-2 border-primary shadow-md`}
+        className={`${disable==true? "bg-gray-300" : ""} w-full px-4 py-2 mb-4 border-2 border-purple-custom-1 rounded-md focus:outline-none focus:border-purple-500`}
         value={value}
         required={required}
         placeholder={placeHolder}
