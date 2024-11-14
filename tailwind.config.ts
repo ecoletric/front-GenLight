@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#AA93B7",
+        "purple-custom-1": "#A35DCA",
       },
     },
   },
