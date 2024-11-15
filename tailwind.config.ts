@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "#AA93B7",
         "purple-custom-1": "#A35DCA",
+        "lightpink" : "#f8eefe"
       },
       fontFamily: {
         primary : "var(--primary), Arial"
