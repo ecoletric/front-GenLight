@@ -1,15 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import Logo from "../Logo/Logo";
 
 export default function Rodape() {
   return (
     <footer className="bg-background text-black py-8">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
         
-        <div className="flex items-center space-x-2">
-          <Image src="/energia-renovavel.png" alt="simbolo raio" height={25} width={25} />
-          <h2 className="text-xl font-bold">Genlight</h2>
-        </div>
+        <Logo />
 
         <div className="text-center md:text-left">
           <p>Rua das Palmeiras, 1234 | São Paulo | Brasil</p>
