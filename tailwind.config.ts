@@ -12,6 +12,9 @@ export default {
         background: "#AA93B7",
         "purple-custom-1": "#A35DCA",
       },
+      fontFamily: {
+        primary : "var(--primary), Arial"
+      }
     },
   },
   plugins: [],
