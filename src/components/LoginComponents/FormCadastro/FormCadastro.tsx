@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Botao from "@/components/Botao/Botao";
 import InputArea from "@/components/InputArea/InputArea";
+import { EmpresaType, enderecoTipo, endFinalTipo, viacepTipo } from "@/utils/types/types";
+import { useRouter } from "next/router";
 
 const FormCadastro = () => {
     const [nomeEmpresa, setNomeEmpresa] = useState("");
@@ -13,20 +15,90 @@ const FormCadastro = () => {
     const [senha, setSenha] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
 
-    const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    const maskCEP = (value: string): string => {
+        return value
+          .replace(/\D/g, '')
+          .replace(/(\d{5})(\d{3})$/, '$1-$2');
+      };
+
+      async function  guardarEndereco(endereco:enderecoTipo){
+        const res = await fetch("http://localhost:8080/endereco",{
+            method: "POST",
+            headers:{
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(endereco),
+        })
+        return res
+    }
+    async function  guardarEmpresa(empresa:EmpresaType){
+        const res = await fetch("http://localhost:8080/empresa",{
+            method: "POST",
+            headers:{
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(empresa),
+        })
+        return res
+    }
+    const nav = useRouter()
+
+    const viaCep = async (cep: string) => {
+        try {
+          cep.replace("-","")
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+          if (!response.ok) {
+            throw new Error(`Erro ao buscar CEP: ${response.statusText}`);
+          }
+          const data: viacepTipo = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Erro ao buscar o CEP:", error);
+        }
+      };
+
+    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (senha !== confirmarSenha && !email.includes('@') && cep.length != 8) {
             alert("As senhas não coincidem.");
             return;
         }
-        console.log({
-            nomeEmpresa,
-            cnpj,
-            email,
-            cep,
-            numero,
-            senha,
-        });
+        const via = await viaCep(cep)
+        if(!via){
+            console.error("Erro ao obter o endereço com o CEP fornecido.");
+            return;
+        }
+        const cleanedCEP = cep.replace(/\D/g, "");
+
+        if(senha == confirmarSenha && email.includes('@') && cep.length == 8){
+        const endereco: enderecoTipo = {
+            cep: cleanedCEP,
+            nomeLogradouro: via.logradouro,
+            numeroLogradouro: parseInt(numero),
+            uf: via.uf,
+            cidade: via.localidade,
+            bairro: via.bairro,
+            complemento: "complmento isnano",
+          };
+          const resVia  = await guardarEndereco(endereco)
+          if(resVia.ok){
+            const endRes : endFinalTipo = await resVia.json();
+            const empresa : EmpresaType = {
+            nome: nomeEmpresa,
+            cnpj:cnpj,
+            email: email,
+            senha: senha,
+            idEndereco: endRes.idEndereco
+            }
+            const resEmpresa = await guardarEmpresa(empresa)
+            if(resEmpresa.ok){
+                alert("Cadastro realizado com sucesso!")
+                nav.push('/login')
+            }
+        }
+
+        }
+        
     };
 
     return (
@@ -36,7 +108,7 @@ const FormCadastro = () => {
             <InputArea
                 value={nomeEmpresa}
                 required
-                onChange={setNomeEmpresa}
+                onChange={valor =>setNomeEmpresa(valor)}
                 label="Nome da empresa"
                 placeHolder="Digite o nome da empresa"
             />
@@ -44,7 +116,7 @@ const FormCadastro = () => {
             <InputArea
                 value={cnpj}
                 required
-                onChange={setCnpj}
+                onChange={valor =>setCnpj(valor)}
                 label="CNPJ"
                 placeHolder="Digite o CNPJ"
             />
@@ -52,7 +124,7 @@ const FormCadastro = () => {
             <InputArea
                 value={email}
                 required
-                onChange={setEmail}
+                onChange={valor =>setEmail(valor)}
                 label="E-mail"
                 placeHolder="Digite o e-mail"
                 tipo="email"
@@ -61,7 +133,7 @@ const FormCadastro = () => {
             <InputArea
                 value={cep}
                 required
-                onChange={setCep}
+                onChange={valor =>setCep(maskCEP(valor))}
                 label="CEP"
                 placeHolder="Digite o CEP"
             />
@@ -69,7 +141,7 @@ const FormCadastro = () => {
             <InputArea
                 value={numero}
                 required
-                onChange={setNumero}
+                onChange={valor =>setNumero(valor)}
                 label="Número"
                 placeHolder="Digite o número"
                 tipo="number"
@@ -78,7 +150,7 @@ const FormCadastro = () => {
             <InputArea
                 value={senha}
                 required
-                onChange={setSenha}
+                onChange={valor =>setSenha(valor)}
                 label="Senha"
                 placeHolder="Digite a senha"
                 tipo="password"
@@ -87,7 +159,7 @@ const FormCadastro = () => {
             <InputArea
                 value={confirmarSenha}
                 required
-                onChange={setConfirmarSenha}
+                onChange={valor =>setConfirmarSenha(valor)}
                 label="Confirmar senha"
                 placeHolder="Confirme a senha"
                 tipo="password"
