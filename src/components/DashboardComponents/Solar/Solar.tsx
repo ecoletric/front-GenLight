@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Solar() {
+type SolarProps = {
+    idIndustria?: number; 
+    }
+
+export default function Solar({idIndustria}:SolarProps) {
   return (
     <div>Solar</div>
   )

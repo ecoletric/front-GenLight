@@ -10,6 +10,16 @@ export type EmpresaFinal={
     id:number
 }& EmpresaType
 
+export type industriaType={
+    id:number,
+    nome:string
+}
+
+export type industriaFinal={
+    idIndustria:number
+}& industriaType
+
+
 export type viacepTipo = {
     cep: string;
     logradouro: string;

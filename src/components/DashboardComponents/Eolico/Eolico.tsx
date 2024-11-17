@@ -1,6 +1,11 @@
 import React from 'react'
 
-export default function Eolico() {
+
+type EolicoProps = { 
+    idIndustria?: number; 
+    }
+
+export default function Eolico({idIndustria}:EolicoProps) {
   return (
     <div>Eolico</div>
   )

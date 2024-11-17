@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function Previsao() {
+type PrevisaoProps = {
+   idIndustria?: number; 
+  }
+
+export default function Previsao({idIndustria}:PrevisaoProps) {
   return (
     <div>Previsao</div>
   )
