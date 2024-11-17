@@ -109,11 +109,11 @@ const conteudoChanger = () => {
   }, []);
 
   return (
-      <div className='bg-[#AA93B7] flex flex-col gap-4 h-full p-4'>
+      <div className='bg-[#AA93B7] flex flex-col gap-4 min-h-full p-4'>
           <HeaderDashboard/>
           <div className='flex flex-row gap-10'>
           <SidebarDashboard setConteudo={handleClick}/>
-          <div className='flex-grow'>
+          <div className='flex-grow flex gap-5 flex-col'>
             <DropDownIndustria label='Industria' onChange={changeIndustria} industrias={industriasList}/>
             {conteudoChanger()}
           </div>

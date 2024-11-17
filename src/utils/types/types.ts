@@ -15,10 +15,39 @@ export type industriaType={
     nome:string
 }
 
+export type AparelhoGeradorType={
+    idSitio:number,
+    tipo:number,
+    potencia:number
+}
+
+export type aparelhoGeradorFinal={
+    id:number
+}& AparelhoGeradorType
+
+export type MaquinaType={
+    consumo:number,
+    idSitio:number,
+    nome:string
+}
+
+export type maquinaFinal={
+    id:number
+}& MaquinaType
+
 export type industriaFinal={
     idIndustria:number
 }& industriaType
 
+export type sitioType={
+    idEndereco:number,
+    idIndustria:number,
+    tipoFonte:number
+}
+
+export type sitioFinal={
+    id:number
+}& sitioType
 
 export type viacepTipo = {
     cep: string;

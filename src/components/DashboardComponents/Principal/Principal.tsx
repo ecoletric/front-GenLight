@@ -1,16 +1,73 @@
-import Image from 'next/image';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CardInfos from '../CardInfos/CardInfos';
+import { aparelhoGeradorFinal, industriaFinal, maquinaFinal, sitioFinal } from '@/utils/types/types';
+import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
+import Image from 'next/image';
 
 type PrincipalProps = {
-    idIndustria?: number;
+  idIndustria?: number;
+}
+
+export default function Principal({ idIndustria }: PrincipalProps) {
+  const currentDate = new Date().toLocaleDateString();
+  const [sitios, setSitios] = useState<sitioFinal[]>([]);
+  const [maquinas, setMaquinas] = useState<{ [key: number]: maquinaFinal[] }>({});
+  const [aparelhos, setAparelhos] = useState<{ [key: number]: aparelhoGeradorFinal[] }>({});
+
+  const chamaSitio = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/sitio/industria/${id}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch {
+      console.log("Erro ao puxar sitios");
+    }
   }
 
-export default function Principal({idIndustria}: PrincipalProps) {
-  
-  const currentDate = new Date().toLocaleDateString();
+  const chamaMaquina = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/maquina/sitio/${id}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch {
+      console.log("Erro ao puxar maquinas");
+    }
+  }
 
+  const chamaAparelho = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/aparelho/sitio/${id}`);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch {
+      console.log("Erro ao puxar aparelhos");
+    }
+  }
 
+  useEffect(() => {
+    if (idIndustria) {
+      chamaSitio(idIndustria).then((data) => {
+        setSitios(data);
+      });
+    }
+  }, [idIndustria]);
+
+  useEffect(() => {
+    sitios.forEach((sitio) => {
+      chamaMaquina(sitio.id).then((data) => {
+        setMaquinas((maquina) => ({ ...maquina, [sitio.tipoFonte]: data }));
+      });
+      chamaAparelho(sitio.id).then((data) => {
+        setAparelhos((aparelho) => ({ ...aparelho, [sitio.tipoFonte]: data }));
+      });
+    });
+  }, [sitios]);
 
   return (
     <div className='bg-white w-full h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
@@ -24,10 +81,9 @@ export default function Principal({idIndustria}: PrincipalProps) {
       </div>
       <div className='flex flex-row h-1/2 gap-5'>
         <div className='bg-red-200 flex-grow'>
-          <h1>Gráfico de Geração Diária</h1>
+          <h1>Geração dos Sitios</h1>
           <div>
-            {//Graficos de geração diaria
-            }
+          <TabelaSitios sitios={sitios}/>
           </div>
         </div>
         <div className='bg-red-200 flex-grow'>
