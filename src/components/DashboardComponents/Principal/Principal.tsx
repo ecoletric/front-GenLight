@@ -11,9 +11,18 @@ type PrincipalProps = {
 
 export default function Principal({ idIndustria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
-  const [sitios, setSitios] = useState<sitioFinal[]>([]);
+  const [sitios, setSitios] = useState<sitioFinal[]>([
+    { id: 1, idEndereco: 101, idIndustria: 201, tipoFonte: 1 },
+    { id: 2, idEndereco: 102, idIndustria: 202, tipoFonte: 2 },
+    { id: 3, idEndereco: 103, idIndustria: 203, tipoFonte: 3 }
+  ]);
   const [maquinas, setMaquinas] = useState<maquinaFinal[]>([]);
-  const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([]);
+  const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([
+    { id: 1, idSitio: 1, tipo: 1, potencia: 100 },
+    { id: 2, idSitio: 1, tipo: 2, potencia: 200 },
+    { id: 3, idSitio: 2, tipo: 1, potencia: 150 },
+    { id: 5, idSitio: 3, tipo: 2, potencia: 300 },
+  ]);
 
   const chamaSitio = async (id: number) => {
     try {
@@ -89,34 +98,36 @@ export default function Principal({ idIndustria }: PrincipalProps) {
 
 
   return (
-    <div className='bg-white w-full h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
+    <div className='bg-white w-full max-lg:h-auto lg:h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
       <div className='flex justify-end items-center'>
         <Image src={'/calendar.svg'} alt='Calendario' width={30} height={30}></Image>
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
-      <div className='flex w-full flex-row gap-5'>
+      <div className='flex w-full max-lg:flex-col min-lg:flex-row gap-5'>
         <CardInfos image='/calendar.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
         <CardInfos image='/calendar.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
       </div>
-      <div className='flex flex-row h-1/2 gap-5'>
-        <div className='bg-red-200 flex flex-grow w-1/2'>
-          <h1>Geração dos Sitios</h1>
-          <div>
-          <TabelaSitios sitios={sitios}/>
+      <div className='flex flex-col max-lg:gap-5'>
+        <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
+          <div className='bg-red-200 max-lg:w-full flex flex-col flex-grow w-1/2'>
+            <h1>Geração dos Sitios</h1>
+            <div>
+            <TabelaSitios sitios={sitios}/>
+            </div>
+          </div>
+          <div className='bg-red-200 flex flex-col max-lg:w-full lg:min-w-[20rem] h-full max-lg:h-auto'>
+            <h1>Porcentagens da Geração</h1>
+            <div className='max-lg:h-auto lg:h-full'>
+              <PieChart aparelhos={aparelhos} />
+            </div>
           </div>
         </div>
-        <div className='bg-red-200 flex flex-col min-w-[20rem] w-auto h-auto'>
-          <h1>Porcentagens da Geração</h1>
-          <div className='h-full '>
-            <PieChart aparelhos={aparelhos} />
-          </div>
-        </div>
-      </div>
-      <div>
-        <h1>Media de Geração</h1>
         <div>
-          {//Graficos de media de geração
-          }
+          <h1>Media de Geração</h1>
+          <div>
+            {//Graficos de media de geração
+            }
+          </div>
         </div>
       </div>
     </div>
