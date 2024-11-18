@@ -109,13 +109,13 @@ export default function Principal({ idIndustria }: PrincipalProps) {
       </div>
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
-          <div className='bg-red-200 max-lg:w-full flex flex-col flex-grow w-1/2'>
+          <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>
             </div>
           </div>
-          <div className='bg-red-200 flex flex-col max-lg:w-full lg:min-w-[20rem] h-full max-lg:h-auto'>
+          <div className='shadow-md rounded-md flex flex-col max-lg:w-full lg:min-w-[20rem] h-full max-lg:h-auto'>
             <h1>Porcentagens da Geração</h1>
             <div className='max-lg:h-auto lg:h-full'>
               <PieChart aparelhos={aparelhos} />
