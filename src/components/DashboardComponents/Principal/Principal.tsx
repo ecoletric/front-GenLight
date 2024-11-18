@@ -95,8 +95,8 @@ export default function Principal({ idIndustria }: PrincipalProps) {
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
       <div className='flex w-full flex-row gap-5'>
-        <CardInfos image='/calendar.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
-        <CardInfos image='/calendar.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
+        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
+        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
       </div>
       <div className='flex flex-row h-1/2 gap-5'>
         <div className='bg-red-200 flex flex-grow w-1/2'>
