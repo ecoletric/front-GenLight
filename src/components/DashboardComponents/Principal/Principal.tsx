@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import CardInfos from '../CardInfos/CardInfos';
-import { aparelhoGeradorFinal, industriaFinal, maquinaFinal, sitioFinal } from '@/utils/types/types';
+import { aparelhoGeradorFinal, maquinaFinal, sitioFinal } from '@/utils/types/types';
 import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
 import Image from 'next/image';
+import PieChart from './Components/GraficoPizza/PieChart';
 
 type PrincipalProps = {
   idIndustria?: number;
@@ -11,8 +12,8 @@ type PrincipalProps = {
 export default function Principal({ idIndustria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
   const [sitios, setSitios] = useState<sitioFinal[]>([]);
-  const [maquinas, setMaquinas] = useState<{ [key: number]: maquinaFinal[] }>({});
-  const [aparelhos, setAparelhos] = useState<{ [key: number]: aparelhoGeradorFinal[] }>({});
+  const [maquinas, setMaquinas] = useState<maquinaFinal[]>([]);
+  const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([]);
 
   const chamaSitio = async (id: number) => {
     try {
@@ -30,7 +31,8 @@ export default function Principal({ idIndustria }: PrincipalProps) {
     try {
       const res = await fetch(`http://localhost:8080/maquina/sitio/${id}`);
       if (res.ok) {
-        const data = await res.json();
+        const data :maquinaFinal[] = await res.json();
+        setMaquinas(data);
         return data;
       }
     } catch {
@@ -38,18 +40,20 @@ export default function Principal({ idIndustria }: PrincipalProps) {
     }
   }
 
-  const chamaAparelho = async (id: number) => {
+  const chamaAparelho = async (id: number)=> {
     try {
       const res = await fetch(`http://localhost:8080/aparelho/sitio/${id}`);
       if (res.ok) {
-        const data = await res.json();
+        const data:aparelhoGeradorFinal[] = await res.json();
+        setAparelhos(data);
         return data;
       }
     } catch {
       console.log("Erro ao puxar aparelhos");
     }
+    return [];
   }
-
+  
   useEffect(() => {
     if (idIndustria) {
       chamaSitio(idIndustria).then((data) => {
@@ -57,17 +61,32 @@ export default function Principal({ idIndustria }: PrincipalProps) {
       });
     }
   }, [idIndustria]);
-
+  
   useEffect(() => {
-    sitios.forEach((sitio) => {
-      chamaMaquina(sitio.id).then((data) => {
-        setMaquinas((maquina) => ({ ...maquina, [sitio.tipoFonte]: data }));
+    sitios.forEach(async (sitio) => {
+      try {
+        const maquinas = await chamaMaquina(sitio.id);
+        if (!maquinas) {
+          throw new Error('Maquinas não encontradas');
+        }
+        setMaquinas((prevMaquinas) => ([...prevMaquinas, ...maquinas]));
+      } catch (e) {
+        console.log(e);
+      }
+      try{
+      const aparelhos = await chamaAparelho(sitio.id)
+        aparelhos.forEach((aparelho) => {
+          if (!aparelhos) {
+            throw new Error('Tipo de fonte não encontrado');
+          }
+          setAparelhos(prevAparelhos => ([ ...prevAparelhos, aparelho]));
       });
-      chamaAparelho(sitio.id).then((data) => {
-        setAparelhos((aparelho) => ({ ...aparelho, [sitio.tipoFonte]: data }));
-      });
+      }catch (e) {
+        console.log(e);
+      }
     });
   }, [sitios]);
+
 
   return (
     <div className='bg-white w-full h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
@@ -75,22 +94,21 @@ export default function Principal({ idIndustria }: PrincipalProps) {
         <Image src={'/calendar.svg'} alt='Calendario' width={30} height={30}></Image>
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
-      <div className='flex flex-row gap-5'>
+      <div className='flex w-full flex-row gap-5'>
         <CardInfos image='/calendar.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
         <CardInfos image='/calendar.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
       </div>
       <div className='flex flex-row h-1/2 gap-5'>
-        <div className='bg-red-200 flex-grow'>
+        <div className='bg-red-200 flex flex-grow w-1/2'>
           <h1>Geração dos Sitios</h1>
           <div>
           <TabelaSitios sitios={sitios}/>
           </div>
         </div>
-        <div className='bg-red-200 flex-grow'>
+        <div className='bg-red-200 flex flex-col min-w-[20rem] w-auto h-auto'>
           <h1>Porcentagens da Geração</h1>
-          <div>
-            {//Graficos de porcentagem
-            }
+          <div className='h-full '>
+            <PieChart aparelhos={aparelhos} />
           </div>
         </div>
       </div>
