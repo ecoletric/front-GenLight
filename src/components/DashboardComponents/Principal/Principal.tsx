@@ -103,14 +103,14 @@ export default function Principal({ idIndustria }: PrincipalProps) {
         <Image src={'/calendar.svg'} alt='Calendario' width={30} height={30}></Image>
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
-      <div className='flex w-full max-lg:flex-col min-lg:flex-row gap-5'>
-        <CardInfos image='/calendar.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
-        <CardInfos image='/calendar.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
+      <div className='flex w-full flex-row gap-5'>
+        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
+        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
       </div>
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
-            
+
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>
