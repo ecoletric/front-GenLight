@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CardInfos from '../CardInfos/CardInfos';
-import { aparelhoGeradorFinal, maquinaFinal, sitioFinal } from '@/utils/types/types';
+import { aparelhoGeradorFinal, maquinaFinal, sitioConsumo, sitioFinal } from '@/utils/types/types';
 import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
 import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
@@ -11,10 +11,10 @@ type PrincipalProps = {
 
 export default function Principal({ idIndustria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
-  const [sitios, setSitios] = useState<sitioFinal[]>([
+  const [sitios, setSitios] = useState<sitioConsumo[]>([
     { id: 1, idEndereco: 101, idIndustria: 201, tipoFonte: 1 },
     { id: 2, idEndereco: 102, idIndustria: 202, tipoFonte: 2 },
-    { id: 3, idEndereco: 103, idIndustria: 203, tipoFonte: 3 }
+    { id: 3, idEndereco: 103, idIndustria: 203, tipoFonte: 0 }
   ]);
   const [maquinas, setMaquinas] = useState<maquinaFinal[]>([]);
   const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([
@@ -110,6 +110,7 @@ export default function Principal({ idIndustria }: PrincipalProps) {
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
+            
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>

@@ -45,6 +45,11 @@ export type sitioType={
     tipoFonte:number
 }
 
+export type sitioConsumo={
+    energiaProduzida?:number,
+    consumo?:number
+}& sitioType & sitioFinal
+
 export type sitioFinal={
     id:number
 }& sitioType

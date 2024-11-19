@@ -4,7 +4,7 @@ import Eolico from '@/components/DashboardComponents/Eolico/Eolico';
 import HeaderDashboard from '@/components/DashboardComponents/HeaderDashBoard/HeaderDashboard'
 import Previsao from '@/components/DashboardComponents/Previsao/Previsao';
 import Principal from '@/components/DashboardComponents/Principal/Principal';
-import SidebarDashboard from '@/components/DashboardComponents/SidebarDashboard/SidebarDashboard'
+import SidebarDashboard from '@/components/DashboardComponents/SidebarDashboard/SidebarDashboard';
 import Solar from '@/components/DashboardComponents/Solar/Solar';
 import { EmpresaFinal, industriaFinal } from '@/utils/types/types';
 import { useEffect, useState } from 'react'
