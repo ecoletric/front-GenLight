@@ -89,7 +89,7 @@ export default function Eolico({idIndustria}:EolicoProps) {
   }, [sitios]);
   return (
       <div className='bg-white w-full h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
-        <div className='flex justify-center w-full'>
+        <div className='flex justify-center w-full '>
           <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
         </div>
         <div className='flex flex-col md:flex-row font-semibold'>
