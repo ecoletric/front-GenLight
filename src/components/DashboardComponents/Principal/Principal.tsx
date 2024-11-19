@@ -13,18 +13,9 @@ type PrincipalProps = {
 
 export default function Principal({ industria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
-  const [sitios, setSitios] = useState<sitioConsumo[]>([
-    { id: 1, idEndereco: 101, idIndustria: 201, tipoFonte: 1 },
-    { id: 2, idEndereco: 102, idIndustria: 202, tipoFonte: 2 },
-    { id: 3, idEndereco: 103, idIndustria: 203, tipoFonte: 0 }
-  ]);
+  const [sitios, setSitios] = useState<sitioConsumo[]>([]);
   const [maquinas, setMaquinas] = useState<maquinaFinal[]>([]);
-  const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([
-    { id: 1, idSitio: 1, tipo: 1, potencia: 100 },
-    { id: 2, idSitio: 1, tipo: 2, potencia: 200 },
-    { id: 3, idSitio: 2, tipo: 1, potencia: 150 },
-    { id: 5, idSitio: 3, tipo: 2, potencia: 300 },
-  ]);
+  const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([]);
 
   const chamaSitio = async (id: number) => {
     try {
@@ -126,7 +117,12 @@ export default function Principal({ industria }: PrincipalProps) {
           <div className='shadow-md rounded-md flex flex-col max-lg:w-full lg:min-w-[20rem] h-full max-lg:h-auto'>
             <h1>Porcentagens da Geração</h1>
             <div className='max-lg:h-auto lg:h-full'>
-              <PieChart aparelhos={aparelhos} />
+              {aparelhos.length > 0 ? <PieChart aparelhos={aparelhos} />:(
+                <div className='w-full h-full flex text-center items-center justify-center text-xl font-semibold'>
+                  <h1 className='w-4/5'>Não há dados suficientes para gerar o gráfico</h1>
+                </div>
+              )}
+              
             </div>
           </div>
         </div>
