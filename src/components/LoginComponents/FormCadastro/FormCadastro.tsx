@@ -4,7 +4,7 @@ import { useState } from "react";
 import Botao from "@/components/Botao/Botao";
 import InputArea from "@/components/InputArea/InputArea";
 import { EmpresaType, enderecoTipo, endFinalTipo, viacepTipo } from "@/utils/types/types";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation"; 
 
 const FormCadastro = () => {
     const [nomeEmpresa, setNomeEmpresa] = useState("");
@@ -19,6 +19,15 @@ const FormCadastro = () => {
         return value
           .replace(/\D/g, '')
           .replace(/(\d{5})(\d{3})$/, '$1-$2');
+      };
+
+      const maskCNPJ = (value: string): string => {
+        return value
+          .replace(/\D/g, '') 
+          .replace(/^(\d{2})(\d)/, '$1.$2') 
+          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3') 
+          .replace(/\.(\d{3})(\d)/, '.$1/$2') 
+          .replace(/(\d{4})(\d)/, '$1-$2'); 
       };
 
       async function  guardarEndereco(endereco:enderecoTipo){
@@ -69,6 +78,7 @@ const FormCadastro = () => {
             return;
         }
         const cleanedCEP = cep.replace(/\D/g, "");
+        const cleanedCNPJ = cnpj.replace(/\D/g, "");
 
         if(senha == confirmarSenha && email.includes('@') && cep.length == 9){
         const endereco: enderecoTipo = {
@@ -82,14 +92,17 @@ const FormCadastro = () => {
           };
           const resVia  = await guardarEndereco(endereco)
           if(resVia.ok){
+            console.log("Endereço cadastrado com sucesso")
             const endRes : endFinalTipo = await resVia.json();
+            console.log(endRes)
             const empresa : EmpresaType = {
             nome: nomeEmpresa,
-            cnpj:cnpj,
+            cnpj:cleanedCNPJ,
             email: email,
             senha: senha,
-            idEndereco: endRes.idEndereco
+            idEndereco: endRes.id
             }
+            console.log(empresa)
             const resEmpresa = await guardarEmpresa(empresa)
             if(resEmpresa.ok){
                 alert("Cadastro realizado com sucesso!")
@@ -116,9 +129,10 @@ const FormCadastro = () => {
             <InputArea
                 value={cnpj}
                 required
-                onChange={valor =>setCnpj(valor)}
+                onChange={valor =>setCnpj(maskCNPJ(valor))}
                 label="CNPJ"
                 placeHolder="Digite o CNPJ"
+                max_length={18}
             />
 
             <InputArea
@@ -136,6 +150,7 @@ const FormCadastro = () => {
                 onChange={valor =>setCep(maskCEP(valor))}
                 label="CEP"
                 placeHolder="Digite o CEP"
+                max_length={9}
             />
 
             <InputArea

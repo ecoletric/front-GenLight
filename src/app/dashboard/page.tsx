@@ -2,6 +2,7 @@
 import DropDownIndustria from '@/components/DashboardComponents/DropdownIndustria/DropdownIndustria';
 import Eolico from '@/components/DashboardComponents/Eolico/Eolico';
 import HeaderDashboard from '@/components/DashboardComponents/HeaderDashBoard/HeaderDashboard';
+import ModalAddSitio from '@/components/DashboardComponents/ModalAddIndustrias/ModalAddIndustrias';
 import Previsao from '@/components/DashboardComponents/Previsao/Previsao';
 import Principal from '@/components/DashboardComponents/Principal/Principal';
 import SidebarDashboard from '@/components/DashboardComponents/SidebarDashboard/SidebarDashboard';
@@ -11,7 +12,12 @@ import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const [conteudo, setConteudo] = useState<string>('Principal');
-  const [industria, setIndustria] = useState<industriaFinal | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [industria, setIndustria] = useState<industriaFinal >({
+    id: 0,
+    idEmpresa: 0,
+    nome: '',
+  });
   const [industriasList, setIndustriasList] = useState<industriaFinal[]>([]);
   const [empresa, setEmpresa] = useState<EmpresaFinal | null>(null);
 
@@ -21,24 +27,44 @@ export default function Dashboard() {
 
   const changeIndustria = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(event.target.value, 10);
-    const selectedIndustria = industriasList.find(industria => industria.idIndustria === selectedId);
+    const selectedIndustria = industriasList.find(industria => industria.id === selectedId);
     if (selectedIndustria) {
       setIndustria(selectedIndustria);
     }
   };
 
+  useEffect(() => {
+    const getIndustria = async () => {
+      try{
+        const res = await fetch(`http://localhost:8080/industria/${industria?.id}`);
+        if(res.ok){
+          const data: industriaFinal = await res.json();
+          setIndustria(data);
+        }else{
+          throw new Error("Erro ao buscar industria");
+        }
+      }catch(e){
+        console.log(e);
+    }
+    getIndustria();
+  }}), [industria];
+
   const conteudoChanger = () => {
+    if (loading) {
+      return <div>Carregando...</div>;
+    }
+
     switch (conteudo) {
       case 'Principal':
-        return <Principal idIndustria={industria?.idIndustria} />;
+        return <Principal industria={industria} />;
       case 'Eolico':
-        return <Eolico idIndustria={industria?.idIndustria} />;
+        return <Eolico idIndustria={industria?.id} />;
       case 'Solar':
-        return <Solar idIndustria={industria?.idIndustria} />;
+        return <Solar idIndustria={industria?.id} />;
       case 'Previsao':
-        return <Previsao idIndustria={industria?.idIndustria} />;
+        return <Previsao idIndustria={industria?.id} />;
       default:
-        return <Principal idIndustria={industria?.idIndustria} />;
+        return <Principal industria={industria} />;
     }
   };
 
@@ -68,6 +94,13 @@ export default function Dashboard() {
     }
   };
 
+
+
+
+  const onAddIndustria = async (industria: industriaFinal) => {
+    setIndustriasList(prevIndustrias => ([...prevIndustrias, industria]));
+  }
+
   useEffect(() => {
     const chamadaIndustria = async () => {
       try {
@@ -83,6 +116,30 @@ export default function Dashboard() {
         }
       } catch {
         console.log("Erro na chamada industria");
+      }
+    };
+    chamadaIndustria();
+  }, []);
+
+
+  useEffect(() => {
+    const chamadaIndustria = async () => {
+      try {
+        const empresaString = sessionStorage.getItem("empresa");
+        if (empresaString) {
+          const parsedUser: EmpresaFinal = await JSON.parse(empresaString);
+          console.log(parsedUser.id);
+          const industrias = await ApiIndustria(parsedUser.id);
+          console.log(industrias);
+          if (industrias) {
+            setIndustriasList(industrias);
+            setIndustria(industrias[0]); // Defina a primeira indústria como a selecionada
+          }
+        }
+      } catch {
+        console.log("Erro na chamada industria");
+      } finally {
+        setLoading(false); // Defina o carregamento como falso após a chamada da API
       }
     };
     chamadaIndustria();
@@ -116,6 +173,7 @@ export default function Dashboard() {
           <SidebarDashboard setConteudo={handleClick} />
         </div>
         <div className='flex-grow w-full flex gap-5 flex-col'>
+          <ModalAddSitio idEmpresa={empresa?.id?empresa.id:0} onAddIndustria={onAddIndustria}></ModalAddSitio>
           <DropDownIndustria label='Industria' onChange={changeIndustria} industrias={industriasList} />
           {conteudoChanger()}
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CardInfos from '../CardInfos/CardInfos';
-import { aparelhoGeradorFinal, maquinaFinal, sitioConsumo, sitioFinal } from '@/utils/types/types';
+import { aparelhoGeradorFinal, industriaFinal, maquinaFinal, sitioConsumo, sitioFinal } from '@/utils/types/types';
 import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
 import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
@@ -8,10 +8,10 @@ import ModalAddSitio from './Components/ModalAddSitio/ModalAddSitio';
 
 
 type PrincipalProps = {
-  idIndustria?: number;
+  industria: industriaFinal;
 }
 
-export default function Principal({ idIndustria }: PrincipalProps) {
+export default function Principal({ industria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
   const [sitios, setSitios] = useState<sitioConsumo[]>([
     { id: 1, idEndereco: 101, idIndustria: 201, tipoFonte: 1 },
@@ -66,12 +66,12 @@ export default function Principal({ idIndustria }: PrincipalProps) {
   }
   
   useEffect(() => {
-    if (idIndustria) {
-      chamaSitio(idIndustria).then((data) => {
+    if (industria.id) {
+      chamaSitio(industria.id).then((data) => {
         setSitios(data);
       });
     }
-  }, [idIndustria]);
+  }, [industria]);
   
   useEffect(() => {
     sitios.forEach(async (sitio) => {
@@ -117,7 +117,7 @@ export default function Principal({ idIndustria }: PrincipalProps) {
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
-            <ModalAddSitio idIndustria={idIndustria?idIndustria:1} onAddSitio={onSitioCadastrado} />
+            <ModalAddSitio idIndustria={industria.id?industria.id:1} onAddSitio={onSitioCadastrado} />
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>

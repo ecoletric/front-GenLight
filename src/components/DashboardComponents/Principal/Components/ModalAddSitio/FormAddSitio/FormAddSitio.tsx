@@ -86,8 +86,9 @@ export default function FormAddSitio({onSitioCadastrado,idIndustria}: FormAddSit
           const resVia  = await guardarEndereco(endereco)
           if(resVia.ok){
             const endRes : endFinalTipo = await resVia.json();
+            console.log(idIndustria)
             const sitio: sitioType = {
-                idEndereco: endRes.idEndereco,
+                idEndereco: endRes.id,
                 idIndustria: idIndustria,
                 tipoFonte: tipoFonte,
             };
