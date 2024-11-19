@@ -4,6 +4,8 @@ import { aparelhoGeradorFinal, maquinaFinal, sitioConsumo, sitioFinal } from '@/
 import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
 import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
+import ModalAddSitio from './Components/ModalAddSitio/ModalAddSitio';
+
 
 type PrincipalProps = {
   idIndustria?: number;
@@ -97,6 +99,11 @@ export default function Principal({ idIndustria }: PrincipalProps) {
   }, [sitios]);
 
 
+  const onSitioCadastrado = (sitio: sitioFinal) => {
+    setSitios(prevSitios => ([...prevSitios, sitio]));
+  }
+
+
   return (
     <div className='bg-white w-full max-lg:h-auto lg:h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
       <div className='flex justify-end items-center'>
@@ -110,7 +117,7 @@ export default function Principal({ idIndustria }: PrincipalProps) {
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
-
+            <ModalAddSitio idIndustria={idIndustria?idIndustria:1} onAddSitio={onSitioCadastrado} />
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>

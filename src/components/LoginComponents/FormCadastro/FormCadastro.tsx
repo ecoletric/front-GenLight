@@ -70,7 +70,7 @@ const FormCadastro = () => {
         }
         const cleanedCEP = cep.replace(/\D/g, "");
 
-        if(senha == confirmarSenha && email.includes('@') && cep.length == 8){
+        if(senha == confirmarSenha && email.includes('@') && cep.length == 9){
         const endereco: enderecoTipo = {
             cep: cleanedCEP,
             nomeLogradouro: via.logradouro,
