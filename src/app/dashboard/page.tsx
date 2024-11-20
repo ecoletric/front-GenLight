@@ -46,8 +46,9 @@ export default function Dashboard() {
       }catch(e){
         console.log(e);
     }
-    getIndustria();
-  }}), [industria];
+    ;}
+    getIndustria()
+  }, [industria]);
 
   const conteudoChanger = () => {
     if (loading) {

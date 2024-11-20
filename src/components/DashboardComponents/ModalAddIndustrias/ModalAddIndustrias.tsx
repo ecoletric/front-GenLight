@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import Botao from '@/components/Botao/Botao';  
+import React, { useRef, useEffect, useState } from 'react'; 
 import { industriaFinal } from '@/utils/types/types';
 import FormAddIndustria from './FormAddIndustria/FormAddIndustria';
 

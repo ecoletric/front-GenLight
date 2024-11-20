@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import ButtonSideBar from '../SidebarDashboard/ButtonSideBar/ButtonSideBar'; 
 import Image from 'next/image';
+
 
 type SidebarDashboardProps = {
     setConteudo(value: string): void;
