@@ -6,7 +6,6 @@ import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
 import ModalAddSitio from './Components/ModalAddSitio/ModalAddSitio';
 import GraficoGeracoes from './Components/GraficoGeracoes/GraficoGeracoes';
-import { Modal } from '@nextui-org/modal';
 import ModalAddFonte from '../ModalAddFonte/ModalAddFonte';
 
 
