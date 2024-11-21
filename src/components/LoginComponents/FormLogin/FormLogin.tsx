@@ -78,7 +78,7 @@ const FormLogin = ()=>{
                 required={true}
                 onChange={(valor: string) => setinputCnpj(maskCNPJ(valor))}
                 label="CNPJ"
-                placeHolder="Digite seu CPF (XX.XXX.XXX/XXXX-XX)"
+                placeHolder="Digite seu CNPJ (XX.XXX.XXX/XXXX-XX)"
                 max_length={18}
                 />
                 <InputArea

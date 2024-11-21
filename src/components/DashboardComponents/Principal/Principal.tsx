@@ -5,6 +5,7 @@ import TabelaSitios from './Components/TabelaSitios/TabelaSitios';
 import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
 import ModalAddSitio from './Components/ModalAddSitio/ModalAddSitio';
+import GraficoGeracoes from './Components/GraficoGeracoes/GraficoGeracoes';
 
 
 type PrincipalProps = {
@@ -13,8 +14,24 @@ type PrincipalProps = {
 
 export default function Principal({ industria }: PrincipalProps) {
   const currentDate = new Date().toLocaleDateString();
-  const [sitios, setSitios] = useState<sitioConsumo[]>([]);
-  const [maquinas, setMaquinas] = useState<maquinaFinal[]>([]);
+  const [sitios, setSitios] = useState<sitioConsumo[]>([
+    {
+      id: 0,
+      idEndereco: 0,
+      idIndustria: 0,
+      tipoFonte: 0,
+      consumo: 0,
+      energiaProduzida: 0,
+    },
+  ]);
+  const [maquinas, setMaquinas] = useState<maquinaFinal[]>([
+    {
+      id: 0,
+      idSitio: 0,
+      nome: '',
+      consumo: 0
+    }
+  ]);
   const [aparelhos, setAparelhos] = useState<aparelhoGeradorFinal[]>([]);
 
   const chamaSitio = async (id: number) => {
@@ -44,7 +61,7 @@ export default function Principal({ industria }: PrincipalProps) {
 
   const chamaAparelho = async (id: number)=> {
     try {
-      const res = await fetch(`http://localhost:8080/aparelho/sitio/${id}`);
+      const res = await fetch(`http://localhost:8080/aparelho-gerador/sitio/${id}`);
       if (res.ok) {
         const data:aparelhoGeradorFinal[] = await res.json();
         setAparelhos(data);
@@ -57,37 +74,32 @@ export default function Principal({ industria }: PrincipalProps) {
   }
   
   useEffect(() => {
-    if (industria.id) {
-      chamaSitio(industria.id).then((data) => {
-        setSitios(data);
-      });
-    }
+    const fetchData = async () => {
+      if (industria.id) {
+        const sitiosData = await chamaSitio(industria.id);
+        setSitios(sitiosData);
+
+        const maquinasData: maquinaFinal[] = [];
+        const aparelhosData: aparelhoGeradorFinal[] = [];
+
+        for (const sitio of sitiosData) {
+          const maquinas = await chamaMaquina(sitio.id);
+          if (maquinas) {
+            maquinasData.push(...maquinas);
+          }
+
+          const aparelhos = await chamaAparelho(sitio.id);
+          aparelhosData.push(...aparelhos);
+        }
+
+        setMaquinas(maquinasData);
+        setAparelhos(aparelhosData);
+      }
+    };
+
+    fetchData();
   }, [industria]);
   
-  useEffect(() => {
-    sitios.forEach(async (sitio) => {
-      try {
-        const maquinas = await chamaMaquina(sitio.id);
-        if (!maquinas) {
-          throw new Error('Maquinas não encontradas');
-        }
-        setMaquinas((prevMaquinas) => ([...prevMaquinas, ...maquinas]));
-      } catch (e) {
-        console.log(e);
-      }
-      try{
-      const aparelhos = await chamaAparelho(sitio.id)
-        aparelhos.forEach((aparelho) => {
-          if (!aparelhos) {
-            throw new Error('Tipo de fonte não encontrado');
-          }
-          setAparelhos(prevAparelhos => ([ ...prevAparelhos, aparelho]));
-      });
-      }catch (e) {
-        console.log(e);
-      }
-    });
-  }, [sitios]);
 
 
   const onSitioCadastrado = (sitio: sitioFinal) => {
@@ -102,8 +114,8 @@ export default function Principal({ industria }: PrincipalProps) {
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
       <div className='flex w-full max-md:flex-col flex-row gap-5'>
-        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='NadaPorEnquanto'/>
-        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='NadaPorEnquanto'/>
+        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='5000kw'/>
+        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='Solar'/>
       </div>
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
@@ -126,11 +138,10 @@ export default function Principal({ industria }: PrincipalProps) {
             </div>
           </div>
         </div>
-        <div>
-          <h1>Media de Geração</h1>
+        <div className='bg-white w-full max-lg:h-auto lg:h-full rounded-[36px] flex flex-col gap-5 p-3 shadow-lg'>
+          <h1>Gerações</h1>
           <div>
-            {//Graficos de media de geração
-            }
+            <GraficoGeracoes maquinas={maquinas} aparelhos={aparelhos}></GraficoGeracoes>
           </div>
         </div>
       </div>

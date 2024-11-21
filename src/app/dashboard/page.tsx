@@ -29,26 +29,12 @@ export default function Dashboard() {
     const selectedId = parseInt(event.target.value, 10);
     const selectedIndustria = industriasList.find(industria => industria.id === selectedId);
     if (selectedIndustria) {
+      console.log(industria)
       setIndustria(selectedIndustria);
     }
   };
 
-  useEffect(() => {
-    const getIndustria = async () => {
-      try{
-        const res = await fetch(`http://localhost:8080/industria/${industria?.id}`);
-        if(res.ok){
-          const data: industriaFinal = await res.json();
-          setIndustria(data);
-        }else{
-          throw new Error("Erro ao buscar industria");
-        }
-      }catch(e){
-        console.log(e);
-    }
-    ;}
-    getIndustria()
-  }, [industria]);
+
 
   const conteudoChanger = () => {
     if (loading) {
@@ -102,49 +88,8 @@ export default function Dashboard() {
     setIndustriasList(prevIndustrias => ([...prevIndustrias, industria]));
   }
 
-  useEffect(() => {
-    const chamadaIndustria = async () => {
-      try {
-        const empresaString = sessionStorage.getItem("empresa");
-        if (empresaString) {
-          const parsedUser: EmpresaFinal = await JSON.parse(empresaString);
-          console.log(parsedUser.id);
-          const industrias = await ApiIndustria(parsedUser.id);
-          console.log(industrias);
-          if (industrias) {
-            setIndustriasList(industrias);
-          }
-        }
-      } catch {
-        console.log("Erro na chamada industria");
-      }
-    };
-    chamadaIndustria();
-  }, []);
 
 
-  useEffect(() => {
-    const chamadaIndustria = async () => {
-      try {
-        const empresaString = sessionStorage.getItem("empresa");
-        if (empresaString) {
-          const parsedUser: EmpresaFinal = await JSON.parse(empresaString);
-          console.log(parsedUser.id);
-          const industrias = await ApiIndustria(parsedUser.id);
-          console.log(industrias);
-          if (industrias) {
-            setIndustriasList(industrias);
-            setIndustria(industrias[0]); // Defina a primeira indústria como a selecionada
-          }
-        }
-      } catch {
-        console.log("Erro na chamada industria");
-      } finally {
-        setLoading(false); // Defina o carregamento como falso após a chamada da API
-      }
-    };
-    chamadaIndustria();
-  }, []);
 
   useEffect(() => {
     const chamadaEmpresa = async () => {
@@ -163,7 +108,28 @@ export default function Dashboard() {
         console.log("Erro na chamada empresa");
       }
     };
+    const chamadaIndustria = async () => {
+      try {
+        const empresaString = sessionStorage.getItem("empresa");
+        if (empresaString) {
+          const parsedUser: EmpresaFinal = await JSON.parse(empresaString);
+          console.log(parsedUser.id);
+          const industrias = await ApiIndustria(parsedUser.id);
+          console.log(industrias);
+          if (industrias) {
+            setIndustriasList(industrias);
+            setIndustria(industrias[0]); 
+          }
+        }
+      } catch {
+        console.log("Erro na chamada industria");
+      } finally {
+        setLoading(false); 
+      }
+    };
+    
     chamadaEmpresa();
+    chamadaIndustria();
   }, []);
 
   return (
