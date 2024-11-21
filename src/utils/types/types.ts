@@ -11,12 +11,12 @@ export type EmpresaFinal={
 }& EmpresaType
 
 export type industriaType={
-    id:number,
+    idEmpresa:number,
     nome:string
 }
 
 export type AparelhoGeradorType={
-    idSitio:number,
+    sitio:number,
     tipo:number,
     potencia:number
 }
@@ -36,7 +36,7 @@ export type maquinaFinal={
 }& MaquinaType
 
 export type industriaFinal={
-    idIndustria:number
+    id:number
 }& industriaType
 
 export type sitioType={
@@ -44,6 +44,11 @@ export type sitioType={
     idIndustria:number,
     tipoFonte:number
 }
+
+export type sitioConsumo={
+    energiaProduzida?:number,
+    consumo?:number
+}& sitioType & sitioFinal
 
 export type sitioFinal={
     id:number
@@ -76,5 +81,5 @@ export type viacepTipo = {
 }
 
 export type endFinalTipo={
-    idEndereco:number
+    id:number
 } & enderecoTipo

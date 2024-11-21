@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.image-3d {
+  @apply relative;
+  perspective: 1000px;
+}
+
+.image-3d img {
+  @apply w-full h-auto transition-transform duration-300 ease-in-out;
+  transform: rotateY(10deg) rotateX(5deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.image-3d img:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}

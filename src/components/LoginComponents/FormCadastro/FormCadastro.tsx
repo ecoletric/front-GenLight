@@ -4,7 +4,9 @@ import { useState } from "react";
 import Botao from "@/components/Botao/Botao";
 import InputArea from "@/components/InputArea/InputArea";
 import { EmpresaType, enderecoTipo, endFinalTipo, viacepTipo } from "@/utils/types/types";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation"; 
+import Link from "next/link";
+import HomeButton from "@/components/HomeButton/HomeButton";
 
 const FormCadastro = () => {
     const [nomeEmpresa, setNomeEmpresa] = useState("");
@@ -19,6 +21,15 @@ const FormCadastro = () => {
         return value
           .replace(/\D/g, '')
           .replace(/(\d{5})(\d{3})$/, '$1-$2');
+      };
+
+      const maskCNPJ = (value: string): string => {
+        return value
+          .replace(/\D/g, '') 
+          .replace(/^(\d{2})(\d)/, '$1.$2') 
+          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3') 
+          .replace(/\.(\d{3})(\d)/, '.$1/$2') 
+          .replace(/(\d{4})(\d)/, '$1-$2'); 
       };
 
       async function  guardarEndereco(endereco:enderecoTipo){
@@ -69,8 +80,9 @@ const FormCadastro = () => {
             return;
         }
         const cleanedCEP = cep.replace(/\D/g, "");
+        const cleanedCNPJ = cnpj.replace(/\D/g, "");
 
-        if(senha == confirmarSenha && email.includes('@') && cep.length == 8){
+        if(senha == confirmarSenha && email.includes('@') && cep.length == 9){
         const endereco: enderecoTipo = {
             cep: cleanedCEP,
             nomeLogradouro: via.logradouro,
@@ -82,14 +94,17 @@ const FormCadastro = () => {
           };
           const resVia  = await guardarEndereco(endereco)
           if(resVia.ok){
+            console.log("Endereço cadastrado com sucesso")
             const endRes : endFinalTipo = await resVia.json();
+            console.log(endRes)
             const empresa : EmpresaType = {
             nome: nomeEmpresa,
-            cnpj:cnpj,
+            cnpj:cleanedCNPJ,
             email: email,
             senha: senha,
-            idEndereco: endRes.idEndereco
+            idEndereco: endRes.id
             }
+            console.log(empresa)
             const resEmpresa = await guardarEmpresa(empresa)
             if(resEmpresa.ok){
                 alert("Cadastro realizado com sucesso!")
@@ -102,6 +117,7 @@ const FormCadastro = () => {
     };
 
     return (
+        <>
         <form onSubmit={handleSubmit} className="p-8 w-[700px] mx-auto rounded-lg shadow-md bg-white">
             <h1 className="text-2xl mb-4 font-medium text-primary">Cadastro</h1>
 
@@ -116,9 +132,10 @@ const FormCadastro = () => {
             <InputArea
                 value={cnpj}
                 required
-                onChange={valor =>setCnpj(valor)}
+                onChange={valor =>setCnpj(maskCNPJ(valor))}
                 label="CNPJ"
                 placeHolder="Digite o CNPJ"
+                max_length={18}
             />
 
             <InputArea
@@ -136,6 +153,7 @@ const FormCadastro = () => {
                 onChange={valor =>setCep(maskCEP(valor))}
                 label="CEP"
                 placeHolder="Digite o CEP"
+                max_length={9}
             />
 
             <InputArea
@@ -164,11 +182,13 @@ const FormCadastro = () => {
                 placeHolder="Confirme a senha"
                 tipo="password"
             />
-
+            <label className="w-full flex items-center text-lg justify-center gap-2">Já possui conta?<Link className="font-semibold text-blue-600" href={"/login"}>Clique aqui</Link></label>
             <div className="text-center flex w-full items-center justify-center">
                 <Botao tipo="submit">Cadastrar</Botao>
             </div>
         </form>
+        <HomeButton></HomeButton>
+        </>
     );
 };
 
