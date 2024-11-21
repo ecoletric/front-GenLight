@@ -6,6 +6,8 @@ import Image from 'next/image';
 import PieChart from './Components/GraficoPizza/PieChart';
 import ModalAddSitio from './Components/ModalAddSitio/ModalAddSitio';
 import GraficoGeracoes from './Components/GraficoGeracoes/GraficoGeracoes';
+import { Modal } from '@nextui-org/modal';
+import ModalAddFonte from '../ModalAddFonte/ModalAddFonte';
 
 
 type PrincipalProps = {
@@ -100,7 +102,13 @@ export default function Principal({ industria }: PrincipalProps) {
     fetchData();
   }, [industria]);
   
-
+  const onFonteCadastrada = (fonte: maquinaFinal | aparelhoGeradorFinal,tipo : number) => {
+    if (tipo === 0) {
+      setMaquinas(prevMaquinas => ([...prevMaquinas, fonte as maquinaFinal]));
+    } else {
+      setAparelhos(prevAparelhos => ([...prevAparelhos, fonte as aparelhoGeradorFinal]));
+    }
+  }
 
   const onSitioCadastrado = (sitio: sitioFinal) => {
     setSitios(prevSitios => ([...prevSitios, sitio]));
@@ -120,7 +128,10 @@ export default function Principal({ industria }: PrincipalProps) {
       <div className='flex flex-col max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
+          <div className='flex flex-row w-full gap-5 mt-5 mb-5'>
             <ModalAddSitio idIndustria={industria.id?industria.id:1} onAddSitio={onSitioCadastrado} />
+            <ModalAddFonte idIndustria={industria.id?industria.id:1} sitios={sitios} onAddFonte={onFonteCadastrada} />
+            </div>
             <h1>Geração dos Sitios</h1>
             <div>
             <TabelaSitios sitios={sitios}/>

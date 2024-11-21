@@ -16,7 +16,7 @@ export type industriaType={
 }
 
 export type AparelhoGeradorType={
-    idSitio:number,
+    sitio:number,
     tipo:number,
     potencia:number
 }
