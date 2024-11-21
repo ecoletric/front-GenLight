@@ -26,9 +26,12 @@ export default function Page(){
             <p className="text-gray-600 mt-2 flex-grow">Reduza sua conta de luz e transforme excedentes em créditos, contribuindo para o caixa da sua empresa.</p>
           </div>
         </div>
-        <div className="py-10">
+        <div className="py-10 flex flex-col justify-center items-center gap-5">
           <h2 className="text-gray-600 mt-6 text-center text-2xl font-semibold">Genlight: liderando com eficiência e inovação na gestão da sua energia.</h2>
           <p>Imagem do site</p>
+          <div className="image-3d w-3/5 h-auto">
+          <Image className="rounded-2xl" src={"/dashboard.png"} width={800} height={600} alt="Imagem de amostra"></Image>
+          </div>
         </div>
         <div className="text-center py-10">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Genlight</h2>
