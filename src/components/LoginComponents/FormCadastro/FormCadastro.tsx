@@ -16,6 +16,7 @@ const FormCadastro = () => {
     const [numero, setNumero] = useState("");
     const [senha, setSenha] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const maskCEP = (value: string): string => {
         return value
@@ -70,13 +71,24 @@ const FormCadastro = () => {
 
     const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (senha !== confirmarSenha && !email.includes('@') && cep.length != 8) {
-            alert("As senhas não coincidem.");
+        setErrorMessage("");
+        if (senha !== confirmarSenha) {
+            setErrorMessage("As senhas não coincidem.");
+            setSenha("");
+            setConfirmarSenha("");
+            return;
+        }
+        if(!email.includes('@')){
+            setErrorMessage("Email inválido.");
+            return;
+        }
+        if( cep.length != 9){
+            setErrorMessage("CEP inválido.");
             return;
         }
         const via = await viaCep(cep)
         if(!via){
-            console.error("Erro ao obter o endereço com o CEP fornecido.");
+            setErrorMessage("Erro ao obter o endereço com o CEP fornecido.");
             return;
         }
         const cleanedCEP = cep.replace(/\D/g, "");
@@ -119,6 +131,7 @@ const FormCadastro = () => {
     return (
         <>
         <form onSubmit={handleSubmit} className="p-8 w-[700px] mx-auto rounded-lg shadow-md bg-white">
+            {errorMessage != "" ? <p className="text-red-500 text-center">{errorMessage}</p>:<></>}
             <h1 className="text-2xl mb-4 font-medium text-primary">Cadastro</h1>
 
             <InputArea

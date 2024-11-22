@@ -21,6 +21,7 @@ const FormLogin = ()=>{
     const [inputCnpj, setinputCnpj] = useState("");
     const [inputSenha, setInputSenha] = useState("");
     const [listaEmpresas,setListaEmpresas] = useState<EmpresaType[]>();
+    const [errorMessage, setErrorMessage] = useState("");
     const nav = useRouter();
 
     useEffect(()=>{
@@ -58,12 +59,13 @@ const FormLogin = ()=>{
                 setInputSenha("");
                 console.log("Logado");
                 empresaAchada = true;
-                nav.push("/")
+                nav.push("/dashboard")
                 break;
             }
         }
         if (!empresaAchada) {
             console.log("Nenhum user encontrado");
+            setErrorMessage("CNPJ ou senha inválidos.");
         }
     }
     }
@@ -72,6 +74,7 @@ const FormLogin = ()=>{
         <>
         <fieldset className="w-[30rem] rounded-xl border-[#AA93B7] border-2 bg-white p-5 shadow-md">
             <h1 className="text-4xl mb-5 font-medium">Entrar</h1>
+            {errorMessage !=""? <p className="text-red-500">{errorMessage}</p>:<></>}
             <form className="flex flex-col" onSubmit={validar}>
                 <InputArea
                 value={inputCnpj}
