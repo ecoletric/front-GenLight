@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SecureCar
 
-## Getting Started
+A GenLight é um projeto desenvolvido com o proposito de ajudar no gerenciamento dos sitios enegéticos de industrias e empresas. Este repositório contém a parte frontend do projeto, desenvolvido em Vite, TypeScript e Next.js.
 
-First, run the development server:
+**Acesse nosso site aqui: https://genlight.vercel.app/** 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[Nosso Repo Github original do projeto](https://github.com/ecoletric/front-GenLight)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[Nosso Repo Github com deploy](https://github.com/cotete/front-GenLight)*
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Veja o vídeo demonstrativo da nossa aplicação
+[Protótipo de Youtube](https://youtu.be/X2h2oeF4ZeM)
 
-## Learn More
+## Como rodar o projeto com a api java
 
-To learn more about Next.js, take a look at the following resources:
+Para rodar o projeto Genlight em sua máquina local, siga as instruções abaixo:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Certifique-se de ter a jdk 21 instalada no seu pc, antes de tudo. É possível baixá-la [aqui](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Clone este repositório em sua máquina local utilizando o seguinte comando:
 
-## Deploy on Vercel
+    ```bash
+    git clone https://github.com/ecoletric/java-api
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Acesse o diretório do projeto:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    ```bash
+    cd java-api
+    ```
+
+4. Instale as dependências maven.
+
+5. O projeto estará disponível no endereço [http://localhost:8080](http://localhost:8080).
+
+No projeto também consta uma Inteligência artitifial, que pega o id do sitio que o usuário quer, e consegue ter uma previsão aproximada de qual será a geração diária desse sitio, seja ele solar ou eólico, para acessar o repositório basta clicar [aqui](https://github.com/ecoletric/ia)
+
+## Contribuintes do projeto
+
+<div style="display: flex; gap: 10px; align-items: center; margin: 20px 0">
+    <img src="https://github.com/juliaangelozi.png" style="height: 50px; width: 50px; border-radius: 100%" />
+    <span style="font-size: 1.5em;">Julia Medeiros Angelozi</span>
+</div>
+
+<div style="display: flex; gap: 10px; align-items: center; margin: 20px 0">
+    <img src="https://github.com/cotete.png" style="height: 50px; width: 50px; border-radius: 100%" />
+    <span style="font-size: 1.5em;">Felipe Ribeiro da Silva</span>
+</div>
+<div style="display: flex; gap: 10px; align-items: center; margin: 20px 0">
+    <img src="https://github.com/gustavodscruz.png" style="height: 50px; width: 50px; border-radius: 100%" />
+    <span style="font-size: 1.5em;">Gustavo Dias da Silva Cruz</span>
+</div>
