@@ -124,7 +124,7 @@ export default function Principal({ industria }: PrincipalProps) {
         <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='5000kw'/>
         <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='Solar'/>
       </div>
-      <div className='flex flex-col max-lg:gap-5'>
+      <div className='flex flex-col gap-5 max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
           <div className='flex flex-row w-full gap-5 mt-5 mb-5'>
