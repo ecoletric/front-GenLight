@@ -1,17 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Botao from '@/components/Botao/Botao';  
+ 
 import { aparelhoGeradorFinal, maquinaFinal, sitioFinal } from '@/utils/types/types';
 import FormAddFonte from './FormAddFonte/FormAddFonte';
 
 
 
 type ModalAdicionarSitio = {
-    idIndustria: number;
     sitios: sitioFinal[];
     onAddFonte: (fonte: maquinaFinal | aparelhoGeradorFinal, tipo:number) => void;
   };
   
-  const ModalAddFonte = ({ onAddFonte, idIndustria,sitios }: ModalAdicionarSitio) => {
+  const ModalAddFonte = ({ onAddFonte,sitios }: ModalAdicionarSitio) => {
     const ref = useRef<HTMLDialogElement>(null);
     const [show, setShow] = useState(false);
     const handleAddSitio = (fonte: maquinaFinal | aparelhoGeradorFinal,tipo:number) => {

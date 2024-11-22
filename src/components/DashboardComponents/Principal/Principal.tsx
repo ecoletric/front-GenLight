@@ -14,8 +14,6 @@ type PrincipalProps = {
 }
 
 export default function Principal({ industria }: PrincipalProps) {
-  const [totalSolarPower, setTotalSolarPower] = useState(0);
-  const [totalWindPower, setTotalWindPower] = useState(0);
   const [bestEnergy, setBestEnergy] = useState('');
   const currentDate = new Date().toLocaleDateString();
   const [totalGerado, setTotalGerado] = useState(0);
@@ -146,9 +144,7 @@ export default function Principal({ industria }: PrincipalProps) {
   
       const total = sumPotencia - sumConsumo;
       setTotalGerado(total);
-      setTotalSolarPower(solarPower);
-      setTotalWindPower(windPower);
-  
+
       if (solarPower > windPower) {
         setBestEnergy('Solar');
       } else if (windPower > solarPower) {
@@ -189,7 +185,7 @@ export default function Principal({ industria }: PrincipalProps) {
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
           <div className='flex flex-row w-full gap-5 mt-5 mb-5'>
             <ModalAddSitio idIndustria={industria.id?industria.id:1} onAddSitio={onSitioCadastrado} />
-            <ModalAddFonte idIndustria={industria.id?industria.id:1} sitios={sitios} onAddFonte={onFonteCadastrada} />
+            <ModalAddFonte sitios={sitios} onAddFonte={onFonteCadastrada} />
             </div>
             <h1>Geração dos Sitios</h1>
             <div>
