@@ -1,38 +1,33 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { previsaoSolar } from '@/utils/types/types';
-import { FaSolarPanel } from 'react-icons/fa';
+import { previsaoEolica } from '@/utils/types/types';
+import { FaWind } from 'react-icons/fa';
 
-type ModalPrevSolar = {
+type ModalPrevEolico = {
   idSitio: number;
 };
 
-const SolarModal = ({ idSitio }: ModalPrevSolar) => {
-  const [previsao, setPrevisao] = useState<number | null>(null);
+const EolicoModal = ({ idSitio }: ModalPrevEolico) => {
+  const [previsao, setPrevisao] = useState<previsaoEolica['energia_eolica']>(-1);
   const [loading, setLoading] = useState(false);
 
   const ref = useRef<HTMLDialogElement>(null);
   const [show, setShow] = useState(false);
 
-  const prevSolar = async (idSitio: number) => {
-    try {
-      const response = await fetch(`http://localhost:5000/predict-solar/${idSitio}`);
+  const prevEolico = async (idSitio: number) => {
+      const response = await fetch(`http://localhost:5000/predict-eolic/${idSitio}`);
       if (!response.ok) {
         throw new Error();
       }
-      const data: previsaoSolar = await response.json();
-      setPrevisao(data.energia_diaria_estimada);
-    } catch (error) {
-      console.error('Erro: ' + error);
-      setPrevisao(null);
-    } finally {
+      const data: previsaoEolica = await response.json();
+      setPrevisao(data.energia_eolica);
+      console.log(data)
       setLoading(false);
-    }
   };
 
-  const handleSolarPrev = () => {
+  const handleEolicoPrev = () => {
     setShow(true);
     setLoading(true);
-    prevSolar(idSitio);
+    prevEolico(idSitio);
 
     setTimeout(() => {
       setLoading(false);
@@ -51,11 +46,11 @@ const SolarModal = ({ idSitio }: ModalPrevSolar) => {
   return (
     <>
       <div className="flex">
-        <FaSolarPanel
+        <FaWind
           size={20}
-          color="#d3b81f"
+          color="#1f5ed3"
           className="hover:scale-110 transition-all duration-300 cursor-pointer"
-          onClick={handleSolarPrev}
+          onClick={handleEolicoPrev}
         />
       </div>
       {show && (
@@ -76,8 +71,10 @@ const SolarModal = ({ idSitio }: ModalPrevSolar) => {
               </div>
             ) : (
               <>
-                <FaSolarPanel size={80} color="#d3b81f" />
-                <p>{previsao !== null ? previsao : 'Sem previsão solar para sua cidade!'}</p>
+                <FaWind size={80} color="#1f5ed3" />
+                <p>
+                  {previsao != 0 ? previsao : 'Sem previsão para sua cidade!'}
+                </p>
               </>
             )}
           </div>
@@ -87,4 +84,4 @@ const SolarModal = ({ idSitio }: ModalPrevSolar) => {
   );
 };
 
-export default SolarModal;
+export default EolicoModal;

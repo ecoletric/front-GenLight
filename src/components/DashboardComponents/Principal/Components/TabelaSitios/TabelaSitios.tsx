@@ -1,7 +1,8 @@
+import EolicoModal from '@/components/DashboardComponents/Eolico/EolicoModal';
+import SolarModal from '@/components/DashboardComponents/Solar/SolarModal';
 import { sitioConsumo } from '@/utils/types/types';
 import Image from 'next/image';
 import React from 'react';
-import { FaSolarPanel, FaWind } from 'react-icons/fa';
 
 type TabelaSitiosProps = {
   sitios: sitioConsumo[];
@@ -53,9 +54,9 @@ export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
               </button>
               {
                 sitio.tipoFonte == 0 ? '' : sitio.tipoFonte == 1 ? (
-                  <FaSolarPanel size={20} color='#d3b81f' />
+                    <SolarModal idSitio={sitio.id} />
                 ) : (
-                  
+                  <EolicoModal idSitio={sitio.id}/>
                 )
               }
             </td>
