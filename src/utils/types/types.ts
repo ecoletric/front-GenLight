@@ -54,6 +54,15 @@ export type sitioFinal={
     id:number
 }& sitioType
 
+export type previsaoSolar = {
+    energia_diaria_estimada : number
+}
+export type previsaoEolica = {
+    energia_eolica : number,
+    id_sitio : number,
+    potencia : number,
+    predicted_power : number
+}
 export type viacepTipo = {
     cep: string;
     logradouro: string;
