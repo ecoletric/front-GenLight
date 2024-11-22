@@ -1,3 +1,5 @@
+import EolicoModal from '@/components/DashboardComponents/Eolico/EolicoModal';
+import SolarModal from '@/components/DashboardComponents/Solar/SolarModal';
 import { sitioConsumo } from '@/utils/types/types';
 import Image from 'next/image';
 import React from 'react';
@@ -46,10 +48,17 @@ export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
             <td className="py-2 px-4 border-r">{sitio.tipoFonte === 1 ? 'Solar' : sitio.tipoFonte === 0 ? 'Maquinas' : 'Eolico'}</td>
             <td className="py-2 px-4 border-r">{sitio.energiaProduzida ?? 'N/A'}</td>
             <td className="py-2 px-4 border-r">{sitio.consumo ?? 'N/A'}</td>
-            <td className="py-2 px-4">
+            <td className="py-2 px-4 w-full flex gap-2">
               <button onClick={() => handleDelete(sitio.id)}>
-                <Image height={30} width={30} src="./lixeira.svg" alt="Delete" />
+                <Image height={20} width={20} src="./lixeira.svg" alt="Delete" />
               </button>
+              {
+                sitio.tipoFonte == 0 ? '' : sitio.tipoFonte == 1 ? (
+                    <SolarModal idSitio={sitio.id} />
+                ) : (
+                  <EolicoModal idSitio={sitio.id}/>
+                )
+              }
             </td>
           </tr>
         ))}
