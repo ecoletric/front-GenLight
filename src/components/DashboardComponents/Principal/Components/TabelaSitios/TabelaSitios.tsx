@@ -48,7 +48,7 @@ export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
             <td className="py-2 px-4 border-r">{sitio.consumo ?? 'N/A'}</td>
             <td className="py-2 px-4">
               <button onClick={() => handleDelete(sitio.id)}>
-                <Image height={30} width={30} src="./lixeira.png" alt="Delete" />
+                <Image height={30} width={30} src="./lixeira.svg" alt="Delete" />
               </button>
             </td>
           </tr>
