@@ -48,7 +48,7 @@ export default function Cabecalho(){
         <Logo />
         
         <nav className="flex items-center space-x-6">
-          <Link href="/">Sobre</Link>
+          <Link href="/membros">Membros</Link>
           <Link href={empresa?"/dashboard":'/cadastro'} className="px-4 py-2 bg-purple-custom-1 text-white rounded-md hover:bg-purple-700">Para Empresas</Link>
         </nav>
       </header>
