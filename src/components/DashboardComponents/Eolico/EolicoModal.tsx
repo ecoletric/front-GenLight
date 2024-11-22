@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { previsaoEolica } from '@/utils/types/types';
 import { FaWind } from 'react-icons/fa';
+import { FaX } from 'react-icons/fa6';
 
 type ModalPrevEolico = {
   idSitio: number;
@@ -14,7 +15,8 @@ const EolicoModal = ({ idSitio }: ModalPrevEolico) => {
   const [show, setShow] = useState(false);
 
   const prevEolico = async (idSitio: number) => {
-      const response = await fetch(`https://distinct-certainly-gobbler.ngrok-free.app/predict-eolic/${idSitio}`);
+      console.log('Fetching data for idSitio:', idSitio); // Adicionando log
+      const response = await fetch(`/api/predict-eolic/${idSitio}`);
       if (!response.ok) {
         throw new Error();
       }
@@ -56,11 +58,11 @@ const EolicoModal = ({ idSitio }: ModalPrevEolico) => {
       {show && (
         <dialog
           ref={ref}
-          className={`absolute w-[26rem] z-50 pr-2 p-5 ${show ? 'open' : ''}`}
+          className={`absolute w-[26rem] z-50 pr-2 p-5 shadow-lg rounded-lg ${show ? 'open' : ''}`}
         >
           <div className="flex items-center justify-center float-right w-7 h-7 rounded-2xl border-2 border-primary shadow-xl">
             <button className="btnClose" onClick={() => setShow(false)}>
-              X
+              <FaX color='#c46558' size={15} /> 
             </button>
           </div>
           <div className="flex flex-col gap-4 items-center justify-center h-full">
@@ -72,8 +74,8 @@ const EolicoModal = ({ idSitio }: ModalPrevEolico) => {
             ) : (
               <>
                 <FaWind size={80} color="#1f5ed3" />
-                <p>
-                  {previsao != 0 ? previsao : 'Sem previsão para sua cidade!'}
+                <p className='text-center font-medium'>
+                  {previsao != 0 ? `A previsão de geração de energia para o seu sítio é de ${previsao.toFixed(2)} kw` : 'Sem previsão para sua cidade!'}
                 </p>
               </>
             )}

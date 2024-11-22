@@ -19,7 +19,7 @@ export default function DropDownSitio({ label, onChange, sitios }: DropDownSitio
       >
         {sitios.map((sitio) => (
           <option key={sitio.id} value={sitio.id}>
-            {sitio.tipoFonte === 0 ? 'Máquina' : 'Aparelho Gerador'} {sitio.consumo} kWh
+            {sitio.tipoFonte === 0 ? 'Máquina' : 'Aparelho Gerador'}  {sitio.consumo ? sitio.consumo : sitio.energiaProduzida} kWh
           </option>
         ))}
       </select>
