@@ -1,12 +1,9 @@
 "use client";
 import DropDownIndustria from '@/components/DashboardComponents/DropdownIndustria/DropdownIndustria';
-import Eolico from '@/components/DashboardComponents/Eolico/Eolico';
 import HeaderDashboard from '@/components/DashboardComponents/HeaderDashBoard/HeaderDashboard';
 import ModalAddSitio from '@/components/DashboardComponents/ModalAddIndustrias/ModalAddIndustrias';
-import Previsao from '@/components/DashboardComponents/Previsao/Previsao';
 import Principal from '@/components/DashboardComponents/Principal/Principal';
 import SidebarDashboard from '@/components/DashboardComponents/SidebarDashboard/SidebarDashboard';
-import Solar from '@/components/DashboardComponents/Solar/Solar';
 import { EmpresaFinal, industriaFinal } from '@/utils/types/types';
 import { useEffect, useState } from 'react';
 
@@ -44,12 +41,6 @@ export default function Dashboard() {
     switch (conteudo) {
       case 'Principal':
         return <Principal industria={industria} />;
-      case 'Eolico':
-        return <Eolico idIndustria={industria?.id} />;
-      case 'Solar':
-        return <Solar idIndustria={industria?.id} />;
-      case 'Previsao':
-        return <Previsao idIndustria={industria?.id} />;
       default:
         return <Principal industria={industria} />;
     }

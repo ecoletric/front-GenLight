@@ -27,24 +27,6 @@ export default function SidebarDashboard({setConteudo}: SidebarDashboardProps) {
                 ativado={ativado === 'principal'} 
                 onClick={() => handleClick('principal')}
             />
-            <ButtonSideBar 
-                setConteudo={()=>setConteudo('Eolico')} 
-                image={'/helice.svg'} 
-                ativado={ativado === 'eolico'} 
-                onClick={() => handleClick('eolico')}
-            />
-            <ButtonSideBar 
-                setConteudo={()=>setConteudo('Solar')} 
-                image={'/painel-solar.svg'} 
-                ativado={ativado === 'solar'} 
-                onClick={() => handleClick('solar')}
-            />
-            <ButtonSideBar 
-                setConteudo={()=>setConteudo('Previsao')} 
-                image={'/cronometro.svg'} 
-                ativado={ativado === 'previsao'} 
-                onClick={() => handleClick('previsao')}
-            />
         </div>
     )
 }

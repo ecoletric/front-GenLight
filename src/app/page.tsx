@@ -1,9 +1,50 @@
+"use client"
 import Rodape from "@/components/Rodape/Rodape"
 import Cabecalho from "@/components/Cabecalho/Cabecalho"
 import Image from "next/image"
+import Link from "next/link"
+import { useEffect, useState } from "react";
+import { EmpresaFinal } from "@/utils/types/types";
 
 
 export default function Page(){
+    
+  const [empresa, setEmpresa] = useState<EmpresaFinal | null>(null);
+
+  const ApiEmpresa = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/empresa/${id}`);
+      if (res.ok) {
+        const data: EmpresaFinal = await res.json();
+        console.log(data);
+        return data;
+      }
+    } catch {
+      console.log("Erro ao puxar usuario");
+    }
+  };
+
+
+  useEffect(() => {
+    const chamadaEmpresa = async () => {
+      try {
+        const empresaString = sessionStorage.getItem("empresa");
+        if (empresaString) {
+          const parsedUser: EmpresaFinal = await JSON.parse(empresaString);
+          console.log(parsedUser.id);
+          const empresa = await ApiEmpresa(parsedUser.id);
+          console.log(empresa);
+          if (empresa) {
+            setEmpresa(empresa);
+          }
+        }
+      } catch {
+        console.log("Erro na chamada empresa");
+      }
+    };
+    chamadaEmpresa();
+  }, []);
+
   return(
     <div className="min-h-screen flex flex-col">
       <Cabecalho></Cabecalho>
@@ -35,8 +76,8 @@ export default function Page(){
         </div>
         <div className="text-center py-10">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">Genlight</h2>
-          <p className="text-gray-600 mt-2">Seu parceiro na transição para um mundo movido por energia limpa.</p>
-          <button className="mt-6 px-6 py-3 bg-purple-custom-1 text-white font-semibold rounded-lg shadow-md hover:bg-purple-800">Inicie sua amostra</button>
+          <p className="text-gray-600 mt-2 mb-5">Seu parceiro na transição para um mundo movido por energia limpa.</p>
+          <Link href={empresa ? "/dashboard":'/cadastro'} className="mt-6 px-6 py-3 bg-purple-custom-1 text-white font-semibold rounded-lg shadow-md hover:bg-purple-800">Inicie sua amostra</Link>
         </div>
       </main>
 
