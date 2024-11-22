@@ -14,7 +14,7 @@ const EolicoModal = ({ idSitio }: ModalPrevEolico) => {
   const [show, setShow] = useState(false);
 
   const prevEolico = async (idSitio: number) => {
-      const response = await fetch(`http://localhost:5000/predict-eolic/${idSitio}`);
+      const response = await fetch(`https://distinct-certainly-gobbler.ngrok-free.app/predict-eolic/${idSitio}`);
       if (!response.ok) {
         throw new Error();
       }

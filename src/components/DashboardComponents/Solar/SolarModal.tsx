@@ -15,7 +15,7 @@ const SolarModal = ({ idSitio }: ModalPrevSolar) => {
 
   const prevSolar = async (idSitio: number) => {
     try {
-      const response = await fetch(`http://localhost:5000/predict-solar/${idSitio}`);
+      const response = await fetch(`https://distinct-certainly-gobbler.ngrok-free.app/predict-solar/${idSitio}`);
       if (!response.ok) {
         throw new Error();
       }
