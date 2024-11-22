@@ -14,7 +14,9 @@ type PrincipalProps = {
 }
 
 export default function Principal({ industria }: PrincipalProps) {
+  const [bestEnergy, setBestEnergy] = useState('');
   const currentDate = new Date().toLocaleDateString();
+  const [totalGerado, setTotalGerado] = useState(0);
   const [sitios, setSitios] = useState<sitioConsumo[]>([
     {
       id: 0,
@@ -73,6 +75,23 @@ export default function Principal({ industria }: PrincipalProps) {
     }
     return [];
   }
+
+  useEffect(() => {
+    const calcularTotalGerado = () => {
+      let sumPotencia = 0;
+      let sumConsumo = 0;
+  
+      sitios.forEach((sitio) => {
+        sumPotencia += sitio.energiaProduzida || 0;
+        sumConsumo += sitio.consumo || 0;
+      });
+  
+      const total = sumPotencia - sumConsumo;
+      setTotalGerado(total);
+    };
+  
+    calcularTotalGerado();
+  }, [sitios]);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -100,7 +119,44 @@ export default function Principal({ industria }: PrincipalProps) {
 
     fetchData();
   }, [industria]);
+
+  useEffect(() => {
+    const calcularTotalGerado = () => {
+      let sumPotencia = 0;
+      let sumConsumo = 0;
+      let solarPower = 0;
+      let windPower = 0;
   
+      sitios.forEach((sitio) => {
+        const potencia = sitio.energiaProduzida || 0;
+        const consumo = sitio.consumo || 0;
+        sumPotencia += potencia;
+        sumConsumo += consumo;
+  
+        if (sitio.tipoFonte === 1) {
+          // Tipo 1: Solar
+          solarPower += potencia;
+        } else if (sitio.tipoFonte === 2) {
+          // Tipo 2: Eólico
+          windPower += potencia;
+        }
+      });
+  
+      const total = sumPotencia - sumConsumo;
+      setTotalGerado(total);
+
+      if (solarPower > windPower) {
+        setBestEnergy('Solar');
+      } else if (windPower > solarPower) {
+        setBestEnergy('Eólico');
+      } else {
+        setBestEnergy('Empate');
+      }
+    };
+  
+    calcularTotalGerado();
+  }, [sitios]);
+
   const onFonteCadastrada = (fonte: maquinaFinal | aparelhoGeradorFinal,tipo : number) => {
     if (tipo === 0) {
       setMaquinas(prevMaquinas => ([...prevMaquinas, fonte as maquinaFinal]));
@@ -121,15 +177,15 @@ export default function Principal({ industria }: PrincipalProps) {
         <h1 className='text-black text-xl'>{currentDate}</h1>
       </div>
       <div className='flex w-full max-md:flex-col flex-row gap-5'>
-        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao='5000kw'/>
-        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao='Solar'/>
+        <CardInfos image='/engrenagem.svg' alt='Imagem card geração diaria' titulo='Quanto Gerou no dia' Informacao={`${totalGerado}kw`}/>
+        <CardInfos image='/energia.svg' alt='Imagem card melhor geração' titulo='Melhor Energia' Informacao={bestEnergy}/>
       </div>
       <div className='flex flex-col gap-5 max-lg:gap-5'>
         <div className='flex flex-row  max-lg:flex-col h-auto min-h-[20rem] gap-5'>
           <div className='shadow-md rounded-lg max-lg:w-full flex flex-col flex-grow w-1/2'>
           <div className='flex flex-row w-full gap-5 mt-5 mb-5'>
             <ModalAddSitio idIndustria={industria.id?industria.id:1} onAddSitio={onSitioCadastrado} />
-            <ModalAddFonte idIndustria={industria.id?industria.id:1} sitios={sitios} onAddFonte={onFonteCadastrada} />
+            <ModalAddFonte sitios={sitios} onAddFonte={onFonteCadastrada} />
             </div>
             <h1>Geração dos Sitios</h1>
             <div>
