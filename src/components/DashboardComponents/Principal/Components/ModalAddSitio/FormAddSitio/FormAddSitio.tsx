@@ -98,6 +98,7 @@ export default function FormAddSitio({onSitioCadastrado,idIndustria}: FormAddSit
                 alert("Cadastro realizado com sucesso!")
                 const sitioFinal : sitioFinal = await resSitio.json();
                 onSitioCadastrado(sitioFinal)
+                window.location.reload();
             }
         }
         }    

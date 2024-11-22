@@ -134,10 +134,9 @@ export default function Principal({ industria }: PrincipalProps) {
         sumConsumo += consumo;
   
         if (sitio.tipoFonte === 1) {
-          // Tipo 1: Solar
+
           solarPower += potencia;
         } else if (sitio.tipoFonte === 2) {
-          // Tipo 2: Eólico
           windPower += potencia;
         }
       });

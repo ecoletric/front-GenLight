@@ -38,6 +38,7 @@ export default function FormAddIndustria({onIndustriaCadastrada,idEmpresa}: Form
             const data: industriaFinal = await res.json()
             onIndustriaCadastrada(data)
             setNomeIndustria("")
+            window.location.reload();
         }
     }
         
