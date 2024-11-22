@@ -11,8 +11,6 @@ type TabelaSitiosProps = {
 export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
   
   const handleDelete = async (id:number) => {
-    const confirmDelete = confirm('Deseja realmente deletar este sitio?');
-    if (confirmDelete) {
       const res = await fetch(`https://localhost:8080/sitio/${id}`,{
         method: 'DELETE',
       });
@@ -20,7 +18,6 @@ export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
         alert('Sitio deletado com sucesso!');
       } else {
         alert('Erro ao deletar sitio!');
-      }
     }
   };
 
