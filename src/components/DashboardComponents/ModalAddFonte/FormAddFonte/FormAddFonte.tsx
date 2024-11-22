@@ -88,6 +88,7 @@ export default function FormAddFonte({ onFonteCadastrada, sitios }: FormAddFonte
         }
         setPotencia('');
         alert('Aparelho gerador cadastrado com sucesso!');
+        window.location.reload();
       } catch (error) {
         console.error('Erro ao cadastrar aparelho gerador:', error);
       }
