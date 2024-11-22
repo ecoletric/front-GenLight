@@ -22,6 +22,7 @@ const FormLogin = ()=>{
     const [inputSenha, setInputSenha] = useState("");
     const [listaEmpresas,setListaEmpresas] = useState<EmpresaType[]>();
     const [errorMessage, setErrorMessage] = useState("");
+    const [sucesso, setSucesso] = useState("");
     const nav = useRouter();
 
     useEffect(()=>{
@@ -60,6 +61,7 @@ const FormLogin = ()=>{
                 console.log("Logado");
                 empresaAchada = true;
                 nav.push("/dashboard")
+                setSucesso("Logado com sucesso, aguarde alguns instates estamos te redirecionando.");
                 break;
             }
         }
@@ -74,6 +76,7 @@ const FormLogin = ()=>{
         <>
         <fieldset className="w-[30rem] rounded-xl border-[#AA93B7] border-2 bg-white p-5 shadow-md">
             <h1 className="text-4xl mb-5 font-medium">Entrar</h1>
+            {sucesso !=""? <p className="text-green-500">{sucesso}</p>:<></>}
             {errorMessage !=""? <p className="text-red-500">{errorMessage}</p>:<></>}
             <form className="flex flex-col" onSubmit={validar}>
                 <InputArea
