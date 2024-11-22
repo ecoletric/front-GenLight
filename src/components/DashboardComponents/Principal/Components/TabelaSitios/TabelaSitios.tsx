@@ -11,11 +11,12 @@ type TabelaSitiosProps = {
 export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
   
   const handleDelete = async (id:number) => {
-      const res = await fetch(`https://localhost:8080/sitio/${id}`,{
+      const res = await fetch(`http://localhost:8080/sitio/${id}`,{
         method: 'DELETE',
       });
       if (res.ok) {
         alert('Sitio deletado com sucesso!');
+        window.location.reload();
       } else {
         alert('Erro ao deletar sitio!');
     }
