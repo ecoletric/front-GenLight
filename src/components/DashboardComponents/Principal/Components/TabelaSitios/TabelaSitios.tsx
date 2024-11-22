@@ -18,7 +18,6 @@ export default function TabelaSitios({ sitios }: TabelaSitiosProps) {
       });
       if (res.ok) {
         alert('Sitio deletado com sucesso!');
-        window.location.reload();
       } else {
         alert('Erro ao deletar sitio!');
       }
