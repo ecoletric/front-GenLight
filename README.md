@@ -1,4 +1,4 @@
-# SecureCar
+# GenLight
 
 A GenLight é um projeto desenvolvido com o proposito de ajudar no gerenciamento dos sitios enegéticos de industrias e empresas. Este repositório contém a parte frontend do projeto, desenvolvido em Vite, TypeScript e Next.js.
 
